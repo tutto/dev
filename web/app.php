@@ -17,13 +17,17 @@ $apcLoader->register(true);
 require_once __DIR__.'/../app/AppKernel.php';
 //require_once __DIR__.'/../app/AppCache.php';
 
-$kernel = new AppKernel('prod', false);
-$kernel->loadClassCache();
-//$kernel = new AppCache($kernel);
+try {
+    $kernel = new AppKernel(getenv('SYMFONY_ENV'), (boolean) getenv('SYMFONY_DEBUG'));
+    $kernel->loadClassCache();
+    //$kernel = new AppCache($kernel);
 
-// When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
-//Request::enableHttpMethodParameterOverride();
-$request = Request::createFromGlobals();
-$response = $kernel->handle($request);
-$response->send();
-$kernel->terminate($request, $response);
+    // When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
+    //Request::enableHttpMethodParameterOverride();
+    $request = Request::createFromGlobals();
+    $response = $kernel->handle($request);
+    $response->send();
+    $kernel->terminate($request, $response);
+} catch(Exception $ex) {
+    die('Probably you forget set env(SYMFONY_ENV and SYMFONY_DEBUG)');
+}

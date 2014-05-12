@@ -1,0 +1,6 @@
+FrontendBundle:
+    resource: "@FrontendBundle/Controller/HomeController.php"
+    type: annotation
+    
+TuttoDataGridBundle:
+    resource: "@DataGridBundle/Resources/config/routes.yml"
