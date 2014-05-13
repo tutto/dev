@@ -19,7 +19,8 @@ class AppKernel extends Kernel
             
             //Nowe bundle
             new \Tutto\DataGridBundle\DataGridBundle(),
-            new \Tutto\FrontendBundle\FrontendBundle()
+            new \Tutto\FrontendBundle\FrontendBundle(),
+            new \Tutto\SecurityBundle\TuttoSecurityBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

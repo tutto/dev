@@ -6,6 +6,8 @@
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 /build/
+/src/
 /vendor/
-/bin/
 /composer.phar
+/bin/Tutto/FrontendBundle/*
+/bin/Tutto/DataGridBundle/*

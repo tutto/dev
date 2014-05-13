@@ -18,6 +18,9 @@ require_once __DIR__.'/../app/AppKernel.php';
 //require_once __DIR__.'/../app/AppCache.php';
 
 try {
+    if(empty(getenv("SYMFONY_ENV")) || empty(getenv('SYMFONY_DEBUG'))) {
+        throw new LogicException();
+    }
     $kernel = new AppKernel(getenv('SYMFONY_ENV'), (boolean) getenv('SYMFONY_DEBUG'));
     $kernel->loadClassCache();
     //$kernel = new AppCache($kernel);
@@ -28,6 +31,7 @@ try {
     $response = $kernel->handle($request);
     $response->send();
     $kernel->terminate($request, $response);
-} catch(Exception $ex) {
-    die('Probably you forget set env(SYMFONY_ENV and SYMFONY_DEBUG)');
+} catch(LogicException $ex) {
+//    die('Probably you forget set env(SYMFONY_ENV and SYMFONY_DEBUG)');
+    throw $ex;
 }
