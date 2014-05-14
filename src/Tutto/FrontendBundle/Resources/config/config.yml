@@ -1,0 +1,2 @@
+imports:
+    - { resource: "@TuttoSecurityBundle/Resources/config/config.yml" }
