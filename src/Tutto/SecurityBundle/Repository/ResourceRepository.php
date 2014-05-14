@@ -1,32 +1,15 @@
 <?php
 
-/**
- * ResourceRepository
- * 
- * (c) Krzysztof Januś <fluke.kuczwa@gmail.com>
- */
-
 namespace Tutto\SecurityBundle\Repository;
 
 use Tutto\SecurityBundle\Entity\Resource\Controller;
 use Tutto\SecurityBundle\Entity\Resource\Action;
 use Tutto\SecurityBundle\Entity\Resource;
-use Tutto\SecurityBundle\Entity\Role;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\NoResultException;
 
 /**
- * ResourceRepository
- * 
- * Description:
- * 
  * @author Krzysztof Januś <fluke.kuczwa@gmail.com>
- * @copyright (c) 2013-10-23, Januś Krzysztof
- * @category \
- * @package \
- * @see
- * @version 1.0
  */
 class ResourceRepository extends EntityRepository {
     const TYPE_CONTROLLER = 'controller';
@@ -34,7 +17,7 @@ class ResourceRepository extends EntityRepository {
     
     /**
      * @param string $name
-     * @return Controller|null
+     * @return Controller
      */
     public function getController($name) {
         return $this->getEntityManager()
@@ -43,16 +26,18 @@ class ResourceRepository extends EntityRepository {
                         'name' => $name
                     ));
     }
-    
+
     /**
+     * @param Controller $controller
      * @param string $name
-     * @return Action|null
+     * @return array
      */
     public function getAction(Controller $controller, $name) {
-        return array(
-            'type'   => self::TYPE_ACTION,
-            'parent' => $controller->getId(),
-            'name'   => $name
-        );
+        return $this->getEntityManager()
+                    ->getRepository(Action::class)
+                    ->findOneBy(array(
+                        'name'   => $name,
+                        'parent' => $controller->getId()
+                    ));
     }
 }

@@ -29,7 +29,7 @@ class Role {
     protected $id;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="children", cascade={"persist"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="children", cascade={"persist"})
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      *
      * @var Role|null
@@ -51,7 +51,7 @@ class Role {
     protected $level = 0;
     
     /**
-     * @ORM\OneToMany(targetEntity="Role", mappedBy="parent", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Role", mappedBy="parent", cascade={"persist"})
      *
      * @var ArrayCollection
      */
