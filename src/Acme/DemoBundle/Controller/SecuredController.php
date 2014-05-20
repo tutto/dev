@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Tutto\SecurityBundle\Configuration\Privilege;
 
 /**
  * @Route("/demo/secured")
@@ -16,6 +17,7 @@ class SecuredController extends Controller
 {
     /**
      * @Route("/login", name="_demo_login")
+     * @Privilege(omit="true")
      * @Template()
      */
     public function loginAction(Request $request)
@@ -28,7 +30,7 @@ class SecuredController extends Controller
 
         return array(
             'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
-            'error'         => $error,
+            'error'         => array(),
         );
     }
 
@@ -45,7 +47,6 @@ class SecuredController extends Controller
      */
     public function logoutAction()
     {
-        // The security layer will intercept this request
     }
 
     /**

@@ -2,42 +2,42 @@
 
 namespace Tutto\FrontendBundle\Controller;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Tutto\DataGridBundle\Controller\AbstractDataGridController;
-use Tutto\DataGridBundle\DataGrid\Example\GridSettings;
 use Tutto\SecurityBundle\Configuration\Privilege;
-use Tutto\SecurityBundle\Entity\Role;
-use Tutto\DataGridBundle\DataGrid\DataProvider\DoctrineProvider;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-
+use Tutto\SecurityBundle\Schedule\Command\Curl;
+use Tutto\SecurityBundle\Schedule\Command\CustomCommand;
+use Tutto\SecurityBundle\Schedule\Command\Php;
+use Tutto\SecurityBundle\Schedule\Provider\CronProvider;
+use Tutto\SecurityBundle\Schedule\ScheduleCollector;
+use Tutto\SecurityBundle\Schedule\SimpleSchedule;
 
 
 /**
  * @author fluke.kuczwa@gmail.com
- * @Privilege()
+ * @Privilege(omit="true")
  */
 class HomeController extends AbstractDataGridController {
     /**
-     * @Route("/"))
-     * @Privilege(role=Role::ROLE_GUEST)
+     * @Route("/", name="_home")
+     * @Template()
      */
-    public function home() {
-        /* @var $em EntityRepository */
-        $em = $this->getDoctrine()->getRepository(Role::class);
-        $query = $em->createQueryBuilder('c');
-                
-        $result = $this->renderDataGrid(
-                new GridSettings(),
-                new DoctrineProvider($query));
-        
-        var_dump($result['grid']->createView());
-        
-        return new Response("@TuttoFrontentBundle:home:home");
+    public function homeAction() {
+        $cron = new CronProvider();
+        $cron->add(
+            new SimpleSchedule(
+                new CustomCommand('curl.exe', array('s'), array(
+                    'http://crm.janek-projects.pl/account/registration'
+                ))
+            )
+        );
+
+        $cron->save();
+
+        return array();
     }
 }

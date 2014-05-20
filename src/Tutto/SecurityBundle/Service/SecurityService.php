@@ -2,6 +2,7 @@
 
 namespace Tutto\SecurityBundle\Service;
 
+use Symfony\Component\HttpFoundation\Request;
 use Tutto\SecurityBundle\Configuration\Privilege\PermissionDeniedException;
 use Tutto\SecurityBundle\Entity\Rolable;
 use Tutto\SecurityBundle\Entity\Role;
@@ -43,6 +44,9 @@ class SecurityService extends ContainerAware {
         /* @var $controller Controller */
         $controller = $controllerArray[0];
         $action     = $controllerArray[1];
+        if(!$controller instanceof Controller) {
+            return false;
+        }
 
         //Check privilege for action
         if(($privilege = $this->getPrivilegeAnnotationForAction($controller, $action))) {

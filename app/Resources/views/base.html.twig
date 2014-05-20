@@ -3,11 +3,23 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+
+        {% block javascripts %}
+            <script src="{{ asset('/js/jquery-2.1.1.min.js') }}"></script>
+            <script src="{{ asset('/js/jquery-ui-1.10.4.custom.min.js') }}"></script>
+            <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/ui-lightness/jquery-ui-1.10.4.custom.min.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/font-awesome.min.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap-theme.min.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/style.css') }}" />
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block body %}
+        {% endblock %}
     </body>
 </html>
