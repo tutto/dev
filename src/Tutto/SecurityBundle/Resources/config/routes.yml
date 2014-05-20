@@ -1,0 +1,3 @@
+RegistrationController:
+  resource: '@TuttoSecurityBundle/Controller/RegistrationController.php'
+  type: annotation

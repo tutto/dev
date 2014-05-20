@@ -1,0 +1,13 @@
+email: Adres e-mail
+password:
+  first: Hasło
+  second: Powtórz hasło
+  not_valid: Hasła muszą być takie same
+
+flash_bag:
+  forms:
+    formNotValid: Formularz nie jest poprawny.
+  message:
+    error: Wystąpił błąd
+    success: Dane zostały zapisane
+    alert: Zwróc uwagę na dane

@@ -1,0 +1,6 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block container %}
+    {%  block flash_bags %}{{ parent() }}{% endblock %}
+    <div>Some additional messahes here.</div>
+{% endblock %}

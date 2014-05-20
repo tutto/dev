@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    {% block container %}
+        {% block flash_bags %}
+            {% include 'FrontendBundle::/partial/flash-bag.html.twig' %}
+        {% endblock %}
+
+        {% block content %}
+        {# here all contents of controllers #}
+        {% endblock %}
+    {% endblock %}
+{% endblock %}

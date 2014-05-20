@@ -1,0 +1,20 @@
+{# macros #}
+{% macro flash_bag(type, messages) %}
+    {% if messages|length > 0 %}
+    <ul class="flash-message {{ type }}">
+    {% for message in messages %}
+        <li>{{ message|trans }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+{% endmacro %}
+
+{# impors #}
+{% import _self as flash %}
+
+{# flashes for errors #}
+{{ flash.flash_bag('error', app.session.getFlashBag().get('error')) }}
+{# flashes for alerts #}
+{{ flash.flash_bag('success', app.session.getFlashBag().get('success')) }}
+{# flashes for success #}
+{{ flash.flash_bag('alert', app.session.getFlashBag().get('alert')) }}
