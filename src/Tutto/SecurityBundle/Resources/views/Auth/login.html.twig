@@ -1,0 +1,16 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{#{% trans_default_domain 'FOSUserBundle' %}#}
+
+{% block container %}
+    {% block flash_bags %}{{ parent() }}{% endblock %}
+
+    <form action="{{ path("_login_check") }}" method="post">
+        {{ form_row(form._username) }}
+        {{ form_row(form._password) }}
+        {{ form_row(form._remember_me) }}
+        <p><a href="{{ path('_reset_password') }}">Not remember password ?</a></p>
+        {{ form_rest(form) }}
+        <button>Login</button>
+    </form>
+{% endblock container %}
