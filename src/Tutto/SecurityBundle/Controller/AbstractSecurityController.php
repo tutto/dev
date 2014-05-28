@@ -23,6 +23,7 @@ abstract class AbstractSecurityController extends Controller {
      * @return AbstractSecurityController
      */
     protected function addFlashSuccess($message = null) {
+        $this->get('form.factory');
         if($message === null) {
             $message = 'flash_bag.message.success';
         }
@@ -100,7 +101,28 @@ abstract class AbstractSecurityController extends Controller {
         return $this->getDoctrine()->getManager();
     }
 
+    /**
+     * @param $id
+     * @param array $parameters
+     * @param null $domain
+     * @param null $locale
+     * @return string
+     */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null) {
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPost() {
+        return $this->getRequest()->isMethod('POST');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGet() {
+        return $this->getRequest()->isMethod('GET');
     }
 } 

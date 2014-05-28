@@ -8,5 +8,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author fluke.kuczwa@gmail.com
  */
 class FrontendBundle extends Bundle {
-    
+    public function getParent() {
+        return 'FOSUserBundle';
+    }
 }

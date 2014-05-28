@@ -68,13 +68,12 @@ class RegistrationController extends AbstractSecurityController {
                             $this->generateUrl(
                                 '_confirm',
                                 array(
-                                    'id' => $user->getId(),
+                                    'id'    => $user->getId(),
                                     'email' => $user->getEmail()
                                 )
                             )
                         );
                     } catch(Exception $ex) {
-                        echo $ex;
                         $this->addFlashError();
                         $this->getEm()->rollback();
                     }
@@ -164,26 +163,24 @@ class RegistrationController extends AbstractSecurityController {
      * @param Account $account
      * @param $subject
      * @param $template
+     * @param array $vars
      * @return int
      */
-    protected function sendEmail(Account $account, $subject, $template) {
-        $body = $this->render(
-            $template,
-            array(
-                'account' => $account,
-                'subject' => $subject,
-            )
-        )->getContent();
-
+    protected function sendEmail(Account $account, $subject, $template, array $vars = array()) {
         $message = Swift_Message::newInstance()
             ->setSubject($this->trans($subject))
             ->setTo($account->getEmail())
+            ->setCharset('utf8')
+            ->setContentType('text/html')
             ->setBody(
                 $this->renderView(
                     $template,
-                    array(
-                        'account' => $account,
-                        'subject' => $subject
+                    array_merge(
+                        array(
+                            'account' => $account,
+                            'subject' => $subject
+                        ),
+                        $vars
                     )
                 )
             );

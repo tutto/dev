@@ -1,3 +1,7 @@
 RegistrationController:
   resource: '@TuttoSecurityBundle/Controller/RegistrationController.php'
   type: annotation
+
+AuthController:
+  resource: "@TuttoSecurityBundle/Controller/AuthController.php"
+  type: annotation

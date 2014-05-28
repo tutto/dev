@@ -1,5 +1,9 @@
 {% extends 'FrontendBundle::layout.email.html.twig' %}
 
 {% block content %}
-    account created
+    <h3>Account created</h3>
+    <p>
+        Your activation link is:
+        <a href="{{ url('_account_activate', {'id': account.getId(), 'email': account.getEmail(), 'token': account.getConfirmationToken}) }}">link</a>
+    </p>
 {% endblock %}
