@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Tutto\SecurityBundle\Configuration\Privilege;
+use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
 
 /**
  * @Route("/demo/secured")
@@ -17,7 +17,7 @@ class SecuredController extends Controller
 {
     /**
      * @Route("/login", name="_demo_login")
-     * @Privilege(omit="true")
+     * @PrivilegeCheck(omit="true")
      * @Template()
      */
     public function loginAction(Request $request)

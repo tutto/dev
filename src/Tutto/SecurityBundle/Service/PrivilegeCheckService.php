@@ -70,7 +70,7 @@ class PrivilegeCheckService extends ContainerAware {
 
         //If annotation was not found either in controller nor action, throw exception.
         throw new PrivilegeCheckServiceException("Controller: '".get_class($controller)."' and action:
-                                          '{$action}' do not implements annotation '".Privilege::class."'");
+                                          '{$action}' do not implements annotation '".PrivilegeCheck::class."'");
     }
 
     /**

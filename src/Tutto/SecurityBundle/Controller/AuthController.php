@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use \Symfony\Component\HttpFoundation\Response;
+use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
 use Tutto\SecurityBundle\Controller\AbstractSecurityController;
 use FOS\UserBundle\Controller\SecurityController;
 use \Symfony\Component\HttpFoundation\Session\Session;
@@ -22,7 +23,6 @@ use Swift_Message;
  */
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Tutto\SecurityBundle\Configuration\Privilege;
 use Tutto\SecurityBundle\Form\Type\LoginType;
 use Tutto\SecurityBundle\Form\Type\ResetPasswordType;
 use Tutto\SecurityBundle\Repository\AccountRepository;
@@ -31,7 +31,7 @@ use Tutto\SecurityBundle\Repository\AccountRepository;
  * Class AuthController
  * @package Tutto\SecurityBundle\Controller
  *
- * @Privilege(omit=true)
+ * @PrivilegeCheck(omit=true)
  */
 class AuthController extends SecurityController {
     /**
