@@ -17,7 +17,7 @@ framework:
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
-        assets_base_urls: /crm/web/
+        assets_base_urls:
 #        assets_version: v2
     default_locale:  "%locale%"
     trusted_hosts:   ~
