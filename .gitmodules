@@ -4,3 +4,6 @@
 [submodule "vendor/KnpMenu"]
 	path = vendor/KnpMenu
 	url = https://github.com/KnpLabs/KnpMenu.git
+[submodule "vendor/ob"]
+    path = vendo/ob
+    url = https://github.com/marcaube/ObHighchartsBundle.git
