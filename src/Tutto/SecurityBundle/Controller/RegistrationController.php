@@ -19,7 +19,7 @@ use Swift_Message;
  */
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Tutto\SecurityBundle\Configuration\Privilege;
+use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
@@ -29,7 +29,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  * @Route(
  *      "/account"
  * )
- * @Privilege(omit=true)
+ * @PrivilegeCheck(omit=true)
  */
 class RegistrationController extends AbstractSecurityController {
     /**
@@ -66,7 +66,7 @@ class RegistrationController extends AbstractSecurityController {
                         $this->getEm()->commit();
                         return $this->redirect(
                             $this->generateUrl(
-                                '_confirm',
+                                '_confirmRegistration',
                                 array(
                                     'id'    => $user->getId(),
                                     'email' => $user->getEmail()
@@ -88,7 +88,7 @@ class RegistrationController extends AbstractSecurityController {
 
     /**
      * @Route("/confirm/{id}-{email}",
-     *      name="_confirm",
+     *      name="_confirmRegistration",
      *      requirements={
      *          "id"="\d+",
      *          "email"="^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$"
@@ -104,9 +104,12 @@ class RegistrationController extends AbstractSecurityController {
         if($account instanceof Account) {
             $this->addFlashSuccess('security.account.accountCreated');
             $this->sendEmail(
-                $account,
+                $account->getEmail(),
                 'security.email.account_created',
-                'TuttoSecurityBundle:emails:account-created.html.twig'
+                'TuttoSecurityBundle:emails:account-created.html.twig',
+                array(
+                    'account' => $account
+                )
             );
         } else {
             $this->addFlashError('security.account.accountNotCreated');
@@ -146,9 +149,12 @@ class RegistrationController extends AbstractSecurityController {
 
                 $this->addFlashSuccess('security.account.enabled');
                 $this->sendEmail(
-                    $account,
+                    $account->getEmail(),
                     'security.email.account_enabled',
-                    'TuttoSecurityBundle::/emails/account-enabled.html.twig'
+                    'TuttoSecurityBundle::/emails/account-enabled.html.twig',
+                    array(
+                        'account' => $account
+                    )
                 );
             }
         } else {
@@ -157,35 +163,6 @@ class RegistrationController extends AbstractSecurityController {
         }
 
         return array('account' => $account);
-    }
-
-    /**
-     * @param Account $account
-     * @param $subject
-     * @param $template
-     * @param array $vars
-     * @return int
-     */
-    protected function sendEmail(Account $account, $subject, $template, array $vars = array()) {
-        $message = Swift_Message::newInstance()
-            ->setSubject($this->trans($subject))
-            ->setTo($account->getEmail())
-            ->setCharset('utf8')
-            ->setContentType('text/html')
-            ->setBody(
-                $this->renderView(
-                    $template,
-                    array_merge(
-                        array(
-                            'account' => $account,
-                            'subject' => $subject
-                        ),
-                        $vars
-                    )
-                )
-            );
-
-        return $this->get('mailer')->send($message);
     }
 
     /**

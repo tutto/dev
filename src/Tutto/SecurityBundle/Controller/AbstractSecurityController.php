@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+use Swift_Message;
+
 /**
  * Class AbstractSecurityController
  * @package Tutto\SecurityBundle\Controller
@@ -124,5 +126,28 @@ abstract class AbstractSecurityController extends Controller {
      */
     public function isGet() {
         return $this->getRequest()->isMethod('GET');
+    }
+
+    /**
+     * @param $email
+     * @param $subject
+     * @param $template
+     * @param array $vars
+     * @return int
+     */
+    protected function sendEmail($email, $subject, $template, array $vars = array()) {
+        $message = Swift_Message::newInstance()
+            ->setSubject($this->trans($subject))
+            ->setCharset('utf8')
+            ->setTo($email)
+            ->setContentType('text/html')
+            ->setBody(
+                $this->renderView(
+                    $template,
+                    $vars
+                )
+            );
+
+        return $this->get('mailer')->send($message);
     }
 } 
