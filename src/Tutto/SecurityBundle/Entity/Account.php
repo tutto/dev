@@ -34,6 +34,14 @@ class Account extends BaseUser {
     protected $person = null;
 
     /**
+     * @ORM\OneToOne(targetEntity="Tutto\SecurityBundle\Entity\Role")
+     * @ORM\JoinColumn(name="role", referencedColumnName="id")
+     *
+     * @var Role
+     */
+    protected $role;
+
+    /**
      *
      */
     public function __construct() {
@@ -67,5 +75,19 @@ class Account extends BaseUser {
         $this->setUsername($email);
 
         return $this;
+    }
+
+    /**
+     * @return Role
+     */
+    public function getRole() {
+        return $this->role;
+    }
+
+    /**
+     * @param Role $role
+     */
+    public function setRole(Role $role) {
+        $this->role = $role;
     }
 } 

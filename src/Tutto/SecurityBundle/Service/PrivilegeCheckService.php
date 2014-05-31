@@ -3,11 +3,11 @@
 namespace Tutto\SecurityBundle\Service;
 
 use Symfony\Component\HttpFoundation\Request;
-use Tutto\SecurityBundle\Configuration\Privilege\PermissionDeniedException;
+use Tutto\SecurityBundle\Configuration\PrivilegeCheck\PermissionDeniedException;
 use Tutto\SecurityBundle\Entity\Rolable;
 use Tutto\SecurityBundle\Entity\Role;
-use Tutto\SecurityBundle\Service\Security\SecurityServiceException;
-use Tutto\SecurityBundle\Configuration\Privilege;
+use Tutto\SecurityBundle\Service\PrivilegeCheckService\PrivilegeCheckServiceException;
+use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,11 +22,11 @@ use Tutto\SecurityBundle\TuttoSecurityBundle;
 /**
  * @author fluke.kuczwa@gmail.com
  */
-class SecurityService extends ContainerAware {
+class PrivilegeCheckService extends ContainerAware {
     /**
      * @param FilterControllerEvent $event
-     * @throws Security\SecurityServiceException
-     * @throws PermissionDeniedException
+     * @throws PrivilegeCheckService\PrivilegeCheckServiceException
+     * @throws \Tutto\SecurityBundle\Configuration\PrivilegeCheck\PermissionDeniedException
      */
     public function init(FilterControllerEvent $event) {
         //Only master request, skip exception messages to render proper view to
@@ -50,7 +50,8 @@ class SecurityService extends ContainerAware {
 
         //Check privilege for action
         if(($privilege = $this->getPrivilegeAnnotationForAction($controller, $action))) {
-            if($privilege->checkPrivilege($this->container)) {
+            $privilege->setContainer($this->container);
+            if($privilege->checkPrivilege()) {
                 return true;
             } else {
                 throw new PermissionDeniedException("Deny for: '{$action}'");
@@ -59,7 +60,8 @@ class SecurityService extends ContainerAware {
 
         //Check privilege for controller if action has not annotation
         if(($privilege = $this->getPrivilegeAnnotationForController($controller))) {
-            if($privilege->checkPrivilege($this->container)) {
+            $privilege->setContainer($this->container);
+            if($privilege->checkPrivilege()) {
                 return true;
             } else {
                 throw new PermissionDeniedException("Deny for controller: '".get_class($controller)."' and action: '{$action}'");
@@ -67,13 +69,13 @@ class SecurityService extends ContainerAware {
         }
 
         //If annotation was not found either in controller nor action, throw exception.
-        throw new SecurityServiceException("Controller: '".get_class($controller)."' and action:
+        throw new PrivilegeCheckServiceException("Controller: '".get_class($controller)."' and action:
                                           '{$action}' do not implements annotation '".Privilege::class."'");
     }
 
     /**
      * @param Controller $controller
-     * @return Privilege
+     * @return PrivilegeCheck
      */
     private function getPrivilegeAnnotationForController(Controller $controller) {
         $object = new ReflectionObject($controller);
@@ -84,8 +86,8 @@ class SecurityService extends ContainerAware {
 
     /**
      * @param Controller $controller
-     * @param string $action
-     * @return Privilege
+     * @param $action
+     * @return PrivilegeCheck
      */
     private function getPrivilegeAnnotationForAction(Controller $controller, $action) {
         $object = new ReflectionObject($controller);
@@ -98,11 +100,11 @@ class SecurityService extends ContainerAware {
 
     /**
      * @param array $annotations
-     * @return Privilege
+     * @return PrivilegeCheck
      */
     private function getPrivilegeAnnotation(array $annotations) {
         foreach($annotations as $annotatin) {
-            if(is_object($annotatin) && $annotatin instanceof Privilege) {
+            if(is_object($annotatin) && $annotatin instanceof PrivilegeCheck) {
                 return $annotatin;
             }
         }

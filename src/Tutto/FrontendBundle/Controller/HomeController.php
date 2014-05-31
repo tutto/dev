@@ -2,42 +2,37 @@
 
 namespace Tutto\FrontendBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Tutto\DataGridBundle\Controller\AbstractDataGridController;
-use Tutto\SecurityBundle\Configuration\Privilege;
+use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Tutto\SecurityBundle\Schedule\Command\Curl;
-use Tutto\SecurityBundle\Schedule\Command\CustomCommand;
-use Tutto\SecurityBundle\Schedule\Command\Php;
-use Tutto\SecurityBundle\Schedule\Provider\CronProvider;
 use Tutto\SecurityBundle\Schedule\ScheduleCollector;
-use Tutto\SecurityBundle\Schedule\SimpleSchedule;
+use Tutto\SecurityBundle\Entity\Role;
 
 
 /**
  * @author fluke.kuczwa@gmail.com
- * @Privilege(omit="true")
+ * @PrivilegeCheck(roles={Role::GUEST})
  */
 class HomeController extends AbstractDataGridController {
     /**
      * @Route("/", name="_home")
+     * @PrivilegeCheck(omit=true)
      * @Template()
      */
     public function homeAction() {
-        $cron = new CronProvider();
-        $cron->add(
-            new SimpleSchedule(
-                new CustomCommand('curl.exe', array('s'), array(
-                    'http://crm.janek-projects.pl/account/registration'
-                ))
-            )
-        );
-
-        $cron->save();
-
         return array();
+    }
+
+    /**
+     * @Route("/home/secured")
+     * @PrivilegeCheck(roles={Role::ADMIN})
+     * @Template()
+     */
+    public function securedAction() {
+        return new Response('Secured action');
     }
 }

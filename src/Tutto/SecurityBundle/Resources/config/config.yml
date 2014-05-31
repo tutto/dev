@@ -1,6 +1,6 @@
 services:
     security:
-        class: Tutto\SecurityBundle\Service\SecurityService
+        class: Tutto\SecurityBundle\Service\PrivilegeCheckService
         calls:
             - [setContainer, ["@service_container"] ]
         tags:

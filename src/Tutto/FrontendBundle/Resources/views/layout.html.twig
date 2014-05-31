@@ -1,6 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
+    {{ knp_menu_render('FrontendBundle:Builder:mainMenu') }}
     {% block container %}
         {% block flash_bags %}
             {% include 'FrontendBundle::/partial/flash-bag.html.twig' %}

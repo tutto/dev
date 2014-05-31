@@ -75,7 +75,12 @@ swiftmailer:
     spool:     { type: memory }
     logging: "%kernel.debug%"
 
+#FOS
 fos_user:
   db_driver: orm
   firewall_name: main
   user_class: Tutto\SecurityBundle\Entity\Account
+
+knp_menu:
+  default_renderer: twig
+
