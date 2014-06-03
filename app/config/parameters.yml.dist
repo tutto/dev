@@ -13,6 +13,7 @@ parameters:
     mailer_sender_address: ~
     mailer_user: ~
     mailer_password: ~
+    assets_base_urls: ~
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
