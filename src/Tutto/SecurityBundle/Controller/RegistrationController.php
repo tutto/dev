@@ -21,6 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Tutto\SecurityBundle\Repository\RoleRepository;
 
 /**
  * Class RegistrationController
@@ -36,11 +37,13 @@ class RegistrationController extends AbstractController {
      */
     public function registerAction(Request $request) {
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
-        $userManager = $this->container->get('fos_user.user_manager');
+        $userManager    = $this->container->get('fos_user.user_manager');
+        /** @var RoleRepository $roleRepository */
+        $roleRepository = $this->getRepository(Role::class);
 
         $user = $userManager->createUser();
         $user->setEnabled(false);
-        $user->setRoles(Role::MEMBER);
+        $user->setRoles([$roleRepository->getByName(Role::MEMBER)]);
 
         $form = $this->createForm(new RegistrationType(), $user);
 
@@ -95,8 +98,9 @@ class RegistrationController extends AbstractController {
      * @Method({"GET"})
      */
     public function confirmAction($id, $email) {
-        /** @var Account $account */
-        $account = $this->getRepository(Account::class)->get($id, $email);
+        /** @var AccountRepository $accountRepository */
+        $accountRepository = $this->getRepository(Account::class);
+        $account = $accountRepository->get($id, $email);
 
         if($account instanceof Account) {
             $this->addFlashSuccess('security.account.accountCreated');

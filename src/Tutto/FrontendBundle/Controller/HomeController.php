@@ -2,7 +2,6 @@
 
 namespace Tutto\FrontendBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tutto\CommonBundle\Controller\AbstractController;
 use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
@@ -12,6 +11,7 @@ use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
  */
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Tutto\SecurityBundle\Entity\Role;
 
 
 /**
@@ -26,14 +26,5 @@ class HomeController extends AbstractController {
      */
     public function homeAction() {
         return array();
-    }
-
-    /**
-     * @Route("/home/secured")
-     * @PrivilegeCheck(roles={Role::ADMIN})
-     * @Template()
-     */
-    public function securedAction() {
-        return new Response('Secured action');
     }
 }
