@@ -171,6 +171,6 @@ class AbstractController extends Controller implements ContainerAwareInterface {
      * @return Account|null
      */
     public function getAccount() {
-        return $this->get('security.context')->getToken();
+        return $this->get('security.context')->getToken()->getUser();
     }
 }

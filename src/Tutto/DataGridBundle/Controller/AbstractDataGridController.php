@@ -18,7 +18,7 @@ abstract class AbstractDataGridController extends AbstractController {
      */
     public function renderDataGrid(GridSettingsInterface $grid, DataProviderInterface $dataProvider) {
         $builder = new SimpleGridBuilder();
-        $builder->setContainer($this->container);
+        $builder->setContainer($this->getContainer());
         
         $grid->initSettings($builder);
         

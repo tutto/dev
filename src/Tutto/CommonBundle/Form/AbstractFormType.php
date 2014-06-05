@@ -54,7 +54,7 @@ abstract class AbstractFormType extends AbstractType implements ContainerAwareIn
      * @return Account|null
      */
     public function getAccount() {
-        return $this->getContainer()->get('security.context')->getToken();
+        return $this->getContainer()->get('security.context')->getToken()->getUser();
     }
 
     /**

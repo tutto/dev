@@ -1,0 +1,3 @@
+_DataGridExampleController:
+    resource: "@DataGridBundle/Controller/Test/TestController.php"
+    type: annotation
