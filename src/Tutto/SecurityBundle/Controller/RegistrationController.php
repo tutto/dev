@@ -5,6 +5,7 @@ namespace Tutto\SecurityBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\UserBundle\Model\User;
 
+use Tutto\CommonBundle\Controller\AbstractController;
 use Tutto\SecurityBundle\Entity\Role;
 use Tutto\SecurityBundle\Entity\Account;
 use Tutto\SecurityBundle\Form\Type\RegistrationType;
@@ -12,7 +13,6 @@ use Tutto\SecurityBundle\Repository\AccountRepository;
 
 use DateTime;
 use Exception;
-use Swift_Message;
 
 /**
  * Annotation
@@ -26,15 +26,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  * Class RegistrationController
  * @package Tutto\SecurityBundle\Controller
  *
- * @Route(
- *      "/account"
- * )
+ * @Route("/account")
  * @PrivilegeCheck(omit=true)
  */
-class RegistrationController extends AbstractSecurityController {
+class RegistrationController extends AbstractController {
     /**
      * @Route("/registration", name="_registration")
-     *
      * @Template()
      */
     public function registerAction(Request $request) {
@@ -43,7 +40,7 @@ class RegistrationController extends AbstractSecurityController {
 
         $user = $userManager->createUser();
         $user->setEnabled(false);
-        $user->addRole(Role::ROLE_MEMBER);
+        $user->setRoles(Role::MEMBER);
 
         $form = $this->createForm(new RegistrationType(), $user);
 
@@ -144,6 +141,7 @@ class RegistrationController extends AbstractSecurityController {
                 $this->addFlashAlert('security.account.enabledAlready');
             } else {
                 $account->setEnabled(true);
+                $account->setConfirmationToken(null);
                 $this->getEm()->persist($account);
                 $this->getEm()->flush();
 

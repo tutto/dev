@@ -2,19 +2,16 @@
 
 namespace Tutto\SecurityBundle\Controller;
 
-use FOS\UserBundle\Form\Factory\FormFactory;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use \Symfony\Component\HttpFoundation\Response;
-use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
-use Tutto\SecurityBundle\Controller\AbstractSecurityController;
-use FOS\UserBundle\Controller\SecurityController;
-use \Symfony\Component\HttpFoundation\Session\Session;
-use \Symfony\Component\Form\FormInterface;
-use \Doctrine\Common\Persistence\ObjectRepository;
 use Tutto\SecurityBundle\Entity\Account;
+use \Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use \Symfony\Component\HttpFoundation\Response;
+use FOS\UserBundle\Controller\SecurityController;
+use Tutto\CommonBundle\Controller\AbstractController;
+use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
+use \Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Swift_Message;
 
@@ -48,7 +45,7 @@ class AuthController extends SecurityController {
 
         if($session->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
             $session->getFlashBag()->add(
-                AbstractSecurityController::FLASH_BAG_ERROR,
+                AbstractController::FLASH_BAG_ERROR,
                 $session->get(SecurityContextInterface::AUTHENTICATION_ERROR)->getMessage()
             );
             $session->remove(SecurityContextInterface::AUTHENTICATION_ERROR);
@@ -104,12 +101,12 @@ class AuthController extends SecurityController {
                     );
                 } else {
                     $this->getSession()->getFlashBag()->add(
-                        AbstractSecurityController::FLASH_BAG_ERROR,
+                        AbstractController::FLASH_BAG_ERROR,
                         'accountNotFound'
                     );
                 }
             } else {
-                $this->getSession()->getFlashBag()->add(AbstractSecurityController::FLASH_BAG_ERROR, 'form.formNotValid');
+                $this->getSession()->getFlashBag()->add(AbstractController::FLASH_BAG_ERROR, 'form.formNotValid');
             }
         }
 
