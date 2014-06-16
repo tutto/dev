@@ -2,10 +2,10 @@
 
 namespace Tutto\SecurityBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
-use Tutto\SecurityBundle\Entity\AbstractAccount;
 use Tutto\FrontendBundle\Entity\Person;
 
 /**
@@ -27,7 +27,7 @@ class Account extends BaseUser {
 
     /**
      * @ORM\OneToOne(targetEntity="Tutto\FrontendBundle\Entity\Person", cascade={"persist"})
-     * @ORM\JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\JoinColumn(name="person_id", referencedColumnName="id", nullable=false)
      *
      * @var Person|null
      */
@@ -35,11 +35,22 @@ class Account extends BaseUser {
 
     /**
      * @ORM\OneToOne(targetEntity="Tutto\SecurityBundle\Entity\Role")
-     * @ORM\JoinColumn(name="role", referencedColumnName="id")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", nullable=false)
      *
      * @var Role
      */
     protected $role;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Tutto\SecurityBundle\Entity\PrivilegeControl")
+     * @ORM\JoinTable(name="accounts_has_privilege_controls",
+     *      joinColumns={@ORM\JoinColumn(name="account_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="privilege_control_id", referencedColumnName="id")}
+     * )
+     *
+     * @var ArrayCollection
+     */
+    protected $privilegeControls;
 
     /**
      *
@@ -47,6 +58,29 @@ class Account extends BaseUser {
     public function __construct() {
         parent::__construct();
         $this->setPerson(new Person());
+        $this->privilegeControls = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPrivilegeControls() {
+        return $this->privilegeControls;
+    }
+
+    /**
+     * @param PrivilegeControl $privilege
+     */
+    public function addPrivilegeControl(PrivilegeControl $privilege) {
+        $this->getPrivilegeControls()[] = $privilege;
+    }
+
+    /**
+     * @param PrivilegeControl $privilege
+     * @return bool
+     */
+    public function hasPrivilegeControl(PrivilegeControl $privilege) {
+        return $this->getPrivilegeControls()->contains($privilege);
     }
 
     /**
@@ -75,6 +109,33 @@ class Account extends BaseUser {
         $this->setUsername($email);
 
         return $this;
+    }
+
+    /**
+     * @param array $roles
+     * @return $this|void
+     */
+    public function setRoles(array $roles) {
+        if(!empty($roles) && isset($roles[0])) {
+            $this->setRole($roles[0]);
+        }
+    }
+
+    /**
+     * @param Role $role
+     * @return void
+     */
+    public function addRole($role) {
+        $this->setRole($role);
+    }
+
+    /**
+     * @return Role
+     */
+    public function getRoles() {
+        return array(
+            $this->getRole()->getName()
+        );
     }
 
     /**

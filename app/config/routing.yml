@@ -1,2 +1,2 @@
 TuttoFrontendBundle:
-    resource: "@FrontendBundle/Resources/config/routes.yml"
+    resource: "@TuttoFrontendBundle/Resources/config/routes.yml"

@@ -2,15 +2,15 @@
 
 namespace Tutto\DataGridBundle\Controller;
 
+use Tutto\CommonBundle\Controller\AbstractController;
 use Tutto\DataGridBundle\DataGrid\GridSettingsInterface;
 use Tutto\DataGridBundle\DataGrid\GridBuilder\SimpleGridBuilder;
 use Tutto\DataGridBundle\DataGrid\DataProviderInterface;
-use Tutto\SecurityBundle\Controller\AbstractSecurityController;
 
 /**
  * @author fluke.kuczwa@gmail.com
  */
-abstract class AbstractDataGridController extends AbstractSecurityController {
+abstract class AbstractDataGridController extends AbstractController {
     /**
      * @param GridSettingsInterface $grid
      * @param DataProviderInterface $dataProvider
@@ -18,7 +18,7 @@ abstract class AbstractDataGridController extends AbstractSecurityController {
      */
     public function renderDataGrid(GridSettingsInterface $grid, DataProviderInterface $dataProvider) {
         $builder = new SimpleGridBuilder();
-        $builder->setContainer($this->container);
+        $builder->setContainer($this->getContainer());
         
         $grid->initSettings($builder);
         

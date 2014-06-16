@@ -2,37 +2,33 @@
 
 namespace Tutto\FrontendBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Tutto\DataGridBundle\Controller\AbstractDataGridController;
+use Tutto\CommonBundle\Controller\AbstractController;
 use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+use \Exception;
+
+/**
+ * Annotation
+ */
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Tutto\SecurityBundle\Schedule\ScheduleCollector;
+use Tutto\SecurityBundle\Entity\Account;
 use Tutto\SecurityBundle\Entity\Role;
-
+use Tutto\SecurityBundle\Repository\AccountRepository;
 
 /**
  * @author fluke.kuczwa@gmail.com
  * @PrivilegeCheck(roles={Role::GUEST})
  */
-class HomeController extends AbstractDataGridController {
+class HomeController extends AbstractController {
     /**
-     * @Route("/", name="_home")
+     * @Route("/home", name="_home")
      * @PrivilegeCheck(omit=true)
      * @Template()
      */
     public function homeAction() {
-        return array();
-    }
 
-    /**
-     * @Route("/home/secured")
-     * @PrivilegeCheck(roles={Role::ADMIN})
-     * @Template()
-     */
-    public function securedAction() {
-        return new Response('Secured action');
+        return array();
     }
 }
