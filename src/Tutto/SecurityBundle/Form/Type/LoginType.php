@@ -2,48 +2,20 @@
 
 namespace Tutto\SecurityBundle\Form\Type;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfTokenManagerAdapter;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Tutto\FrontendBundle\Form\Subscriber\InsertsFromRequest;
+use Tutto\CommonBundle\Form\AbstractFormType;
 
 /**
  * Class LoginType
  * @package Tutto\SecurityBundle\Form\Type
  */
-class LoginType extends AbstractType implements ContainerAwareInterface{
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var CsrfTokenManagerAdapter
-     */
-    protected $csrfProvider;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @var Request
-     */
-    protected $request;
+class LoginType extends AbstractFormType {
 
     public function __construct(ContainerInterface $container) {
         $this->setContainer($container);
-        $this->csrfProvider = $container->get('form.csrf_provider');
-        $this->session      = $container->get('session');
-        $this->request      = $container->get('request');
     }
 
     /**
@@ -51,11 +23,13 @@ class LoginType extends AbstractType implements ContainerAwareInterface{
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
+        $csrfProvider = $this->getContainer()->get('form.csrf_provider');
+
         $builder->add(
             '_username',
             'email',
             array(
-                'data' => $this->session->get(SecurityContextInterface::LAST_USERNAME)
+                'data' => $this->getSession()->get(SecurityContextInterface::LAST_USERNAME)
             )
         );
         $builder->add('_password', 'password');
@@ -70,7 +44,7 @@ class LoginType extends AbstractType implements ContainerAwareInterface{
             '_csrf_token',
             'hidden',
             array(
-                'data' => $this->csrfProvider->generateCsrfToken('authenticate')
+                'data' => $csrfProvider->generateCsrfToken('authenticate')
             )
         );
 
@@ -84,19 +58,5 @@ class LoginType extends AbstractType implements ContainerAwareInterface{
      */
     public function getName() {
         return '';
-    }
-
-    /**
-     * Sets the Container.
-     *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
-     * @return LoginType
-     *
-     * @api
-     */
-    public function setContainer(ContainerInterface $container = null) {
-        $this->container = $container;
-
-        return $this;
     }
 }

@@ -1,3 +1,3 @@
 _DataGridExampleController:
-    resource: "@DataGridBundle/Controller/DataGrid/ExampleController.php"
+    resource: "@TuttoDataGridBundle/Controller/Test/TestController.php"
     type: annotation

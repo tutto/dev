@@ -3,7 +3,13 @@
 namespace Acme\DemoBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
 
+/**
+ * Class WelcomeController
+ * @package Acme\DemoBundle\Controller
+ * @PrivilegeCheck(omit=true)
+ */
 class WelcomeController extends Controller
 {
     public function indexAction()

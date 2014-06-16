@@ -2,21 +2,14 @@
 
 namespace Tutto\SecurityBundle\Configuration;
 
-use FOS\UserBundle\Model\UserInterface;
-use Tutto\SecurityBundle\Configuration\PrivilegeCheck\PermissionDeniedException;
+use Tutto\CommonBundle\DependencyInjection\AbstractContainerAware;
 use Tutto\SecurityBundle\Configuration\PrivilegeCheck\UserNotLoggedException;
-use Tutto\SecurityBundle\DependencyInjection\AbstractContainerAware;
 use Tutto\SecurityBundle\Entity\Account;
 use Tutto\SecurityBundle\Entity\Role;
 use Tutto\SecurityBundle\Repository\RoleRepository;
-use Tutto\SecurityBundle\Entity\Rolable;
 use Tutto\SecurityBundle\Entity\Resource;
-use Tutto\SecurityBundle\Repository\ResourceRepository;
-use Tutto\SecurityBundle\Entity\Resource\Controller;
-use Tutto\SecurityBundle\Entity\Resource\Action;
 
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author fluke.kuczwa@gmail.com
@@ -31,13 +24,6 @@ class PrivilegeCheck extends AbstractContainerAware {
      * @var string
      */
     private $method = self::METHOD_ANNOTATION;
-
-    /**
-     * Session namespace where user is stored.
-     *
-     * @var string
-     */
-    private $sessionNamespace;
     
     /**
      * Role name that allow access
@@ -111,8 +97,8 @@ class PrivilegeCheck extends AbstractContainerAware {
 
     /**
      * @return bool
-     * @throws PermissionDeniedException
-     * @throws UserNotLoggedException
+     * @throws PrivilegeCheckException
+     * @throws PrivilegeCheck\UserNotLoggedException
      */
     public function checkPrivilege() {
         //If is true then not check privileges.
@@ -127,7 +113,6 @@ class PrivilegeCheck extends AbstractContainerAware {
 
         /** @var RoleRepository $roleRepository */
         $roleRepository = $this->getRepository(Role::class);
-        $parts = $this->getControllerAndAction($this->getRequest());
 
         if($this->getMethod() === self::METHOD_DATABASE) {
             throw new PrivilegeCheckException("Method: DATABASE not implemented yet");
@@ -146,13 +131,5 @@ class PrivilegeCheck extends AbstractContainerAware {
         }
 
         return false;
-    }
-
-    /**
-     * @param Request $request
-     * @return array
-     */
-    private function getControllerAndAction(Request $request) {
-        return explode('::', $request->get('_controller'));
     }
 }

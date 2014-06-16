@@ -7,10 +7,17 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Acme\DemoBundle\Form\ContactType;
 
+use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
+
 // these import the "@Route" and "@Template" annotations
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+/**
+ * Class DemoController
+ * @package Acme\DemoBundle\Controller
+ * @PrivilegeCheck(omit=true)
+ */
 class DemoController extends Controller
 {
     /**

@@ -1,17 +1,18 @@
 <?php
 
 namespace Tutto\FrontendBundle\Menu;
+
 use Knp\Menu\FactoryInterface;
-use Knp\Menu\MenuItem;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Tutto\CommonBundle\DependencyInjection\AbstractContainerAware;
 
 /**
  * Class Builder
  * @package Tutto\FrontendBundle\Menu
  */
-class Builder extends ContainerAware {
+class Builder extends AbstractContainerAware {
     public function mainMenu(FactoryInterface $factory, array $options) {
         $menu = $factory->createItem('root');
+        $menu->setChildrenAttribute('class', 'menu');
 
         $menu->addChild('Home', array(
             'route' => '_home',
@@ -19,6 +20,7 @@ class Builder extends ContainerAware {
                 'route' => '_home'
             )
         ));
+
         $menu->addChild('Login', array(
             'route' => '_login'
         ));

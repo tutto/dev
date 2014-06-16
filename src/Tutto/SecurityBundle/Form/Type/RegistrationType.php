@@ -1,16 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: janek
- * Date: 2014-05-19
- * Time: 13:15
- */
 
 namespace Tutto\SecurityBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Class RegistrationType
+ * @package Tutto\SecurityBundle\Form\Type
+ */
 class RegistrationType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {

@@ -39,7 +39,7 @@ class RoleRepository extends EntityRepository {
      */
     public function getByName($name) {
         foreach ($this->getAll() as $role) {
-            if($role->getName() === $name) {
+            if(strtoupper($role->getName()) === strtoupper($name)) {
                 return $role;
             }
         }
