@@ -103,7 +103,7 @@ class Person {
 
     /**
      * @ORM\OneToOne(targetEntity="Address", cascade={"persist"})
-     * @ORM\JoinColumn(name="correspondenceAddress", referencedColumnName="id")
+     * @ORM\JoinColumn(name="correspondence_address_id", referencedColumnName="id")
      *
      * @var Address
      */
@@ -111,7 +111,7 @@ class Person {
 
     /**
      * @ORM\OneToOne(targetEntity="Address", cascade={"persist"})
-     * @ORM\JoinColumn(name="homeAddress", referencedColumnName="id")
+     * @ORM\JoinColumn(name="home_address_id", referencedColumnName="id")
      *
      * @var Address
      */

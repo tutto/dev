@@ -1,8 +1,8 @@
-{% extends 'FrontendBundle::layout.html.twig' %}
+{% extends 'TuttoFrontendBundle::layout.html.twig' %}
 
 {#{% trans_default_domain 'FOSUserBundle' %}#}
 
-{% block container %}
+{% block content %}
     {% block flash_bags %}{{ parent() }}{% endblock %}
 
     <form action="{{ path("_login_check") }}" method="post">
@@ -13,4 +13,4 @@
         {{ form_rest(form) }}
         <button>Login</button>
     </form>
-{% endblock container %}
+{% endblock content %}

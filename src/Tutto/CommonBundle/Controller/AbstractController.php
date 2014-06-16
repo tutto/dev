@@ -5,6 +5,7 @@ namespace Tutto\CommonBundle\Controller;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +44,13 @@ class AbstractController extends Controller implements ContainerAwareInterface {
     protected function addFlashError($message = self::MESSAGE_ERROR) {
         $this->addFlashMessage(self::FLASH_BAG_ERROR, $message);
         return $this;
+    }
+
+    protected function addFormFlashError(Form $form) {
+        $this->addFlashError();
+        foreach($form->getErrors() as $error) {
+            $this->addFlashError($error->getMessage());
+        }
     }
 
     /**
@@ -84,6 +92,13 @@ class AbstractController extends Controller implements ContainerAwareInterface {
      */
     public function getRepository($class) {
         return $this->getDoctrine()->getRepository($class);
+    }
+
+    /**
+     * @return Router
+     */
+    public function getRouter() {
+        return $this->get('router');
     }
 
     /**

@@ -2,7 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml } 
-    - { resource: "@FrontendBundle/Resources/config/config.yml" }
+    - { resource: "@TuttoSecurityBundle/Resources/config/config.yml" }
 
 framework:
     #esi:             ~

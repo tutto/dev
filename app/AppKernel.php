@@ -18,12 +18,12 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             
             //Nowe bundle
-            new \Tutto\DataGridBundle\DataGridBundle(),
-            new \Tutto\FrontendBundle\FrontendBundle(),
+            new \Tutto\DataGridBundle\TuttoDataGridBundle(),
+            new \Tutto\FrontendBundle\TuttoFrontendBundle(),
             new \Tutto\SecurityBundle\TuttoSecurityBundle(),
-            new FOS\UserBundle\FOSUserBundle(),
             new \Tutto\CommonBundle\TuttoCommonBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle()
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new FOS\UserBundle\FOSUserBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

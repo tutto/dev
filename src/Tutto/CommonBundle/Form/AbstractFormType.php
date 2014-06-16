@@ -4,7 +4,9 @@ namespace Tutto\CommonBundle\Form;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -58,6 +60,13 @@ abstract class AbstractFormType extends AbstractType implements ContainerAwareIn
     }
 
     /**
+     * @return Router
+     */
+    public function getRouter() {
+        return $this->getContainer()->get('router');
+    }
+
+    /**
      * @return Session
      */
     public function getSession() {
@@ -78,5 +87,12 @@ abstract class AbstractFormType extends AbstractType implements ContainerAwareIn
      */
     public function getEm($name = null) {
         return $this->getContainer()->get('doctrine')->getManager($name);
+    }
+
+    /**
+     * @return FormFactory
+     */
+    public function getFormFactory() {
+        return $this->getContainer()->get('form.factory');
     }
 }

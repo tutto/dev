@@ -4,6 +4,7 @@ namespace Tutto\CommonBundle\DependencyInjection;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -29,10 +30,22 @@ class AbstractContainerAware implements ContainerAwareInterface {
     }
 
     /**
+     * @return Router
+     */
+    public function getRouter() {
+        return $this->get('router');
+    }
+
+    /**
      * @return Account|null
      */
     public function getAccount() {
-        return $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.context')->getToken();
+
+        if($user !== null) {
+            $user = $user->getUser();
+            return $user instanceof Account ? $user : null;
+        }
     }
 
     /**

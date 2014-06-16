@@ -42,9 +42,6 @@ class RegistrationController extends AbstractController {
         $roleRepository = $this->getRepository(Role::class);
 
         $user = $userManager->createUser();
-        $user->setEnabled(false);
-        $user->setRoles([$roleRepository->getByName(Role::MEMBER)]);
-
         $form = $this->createForm(new RegistrationType(), $user);
 
         if($request->isMethod('post')) {
@@ -54,6 +51,9 @@ class RegistrationController extends AbstractController {
                 } else {
                     $this->getEm()->beginTransaction();
                     try {
+                        $user->setEnabled(false);
+                        $user->setRoles([$roleRepository->getByName(Role::MEMBER)]);
+
                         if ($user instanceof User) {
                             $expiresAt = new DateTime();
                             $expiresAt->add(new \DateInterval('P7D'));
@@ -74,7 +74,7 @@ class RegistrationController extends AbstractController {
                             )
                         );
                     } catch(Exception $ex) {
-                        $this->addFlashError();
+                        $this->addFlashError($ex->getMessage());
                         $this->getEm()->rollback();
                     }
                 }

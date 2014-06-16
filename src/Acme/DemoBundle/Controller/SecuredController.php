@@ -2,22 +2,24 @@
 
 namespace Acme\DemoBundle\Controller;
 
+use Psr\Log\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 use Tutto\SecurityBundle\Configuration\PrivilegeCheck;
 
 /**
  * @Route("/demo/secured")
+ * @PrivilegeCheck(omit="true")
  */
 class SecuredController extends Controller
 {
     /**
      * @Route("/login", name="_demo_login")
-     * @PrivilegeCheck(omit="true")
      * @Template()
      */
     public function loginAction(Request $request)
@@ -30,7 +32,7 @@ class SecuredController extends Controller
 
         return array(
             'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
-            'error'         => array(),
+            'error'         => $error
         );
     }
 
@@ -40,6 +42,7 @@ class SecuredController extends Controller
     public function securityCheckAction()
     {
         // The security layer will intercept this request
+        throw new InvalidArgumentException("Probably was changed.");
     }
 
     /**
