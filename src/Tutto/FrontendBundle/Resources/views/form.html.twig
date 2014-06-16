@@ -1,0 +1,61 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% form_theme form _self %}
+
+{% macro element(item) %}
+    {% if item.vars.attr.class is defined %}
+        {% set classes = item.vars.attr.class %}
+    {% else %}
+        {% set classes = '' %}
+    {% endif %}
+
+    {% set type = item.vars.block_prefixes.1 %}
+    {% if type in ["text", "money", "percent", "choice", "integer"] %}
+        {% set classes = classes~' form-control' %}
+    {% endif %}
+
+    {% set errors = item.vars.form.vars.errors  %}
+    {% if errors|length > 0 %}
+        {% set classes = classes~' error' %}
+    {% endif %}
+
+    {% import _self as myForm %}
+
+    {{ form_widget(item, {'attr': {'class': classes}}) }}
+    {{ myForm.errors(item) }}
+{% endmacro %}
+
+{% macro widget(item, labelCol = 4, inputCol = 8) %}
+    {% import _self as myForm %}
+    <div class="form-group">
+        <div class="col-sm-{{ labelCol }}">{{ myForm.label(item) }}</div>
+        <div class="col-sm-{{ inputCol }}">{{ myForm.element(item) }}</div>
+    </div>
+{% endmacro %}
+
+{% macro label(item) %}
+    <label class="control-label" for="{{ item.vars.id }}">{{ item.vars.label|trans }}</label>
+{% endmacro %}
+
+{% macro errors(item) %}
+    {% set errors = item.vars.form.vars.errors  %}
+
+    {% if errors|length > 0 %}
+    <ul class="errors">
+    {% for error in errors %}
+        <li>{{ error.message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+{% endmacro %}
+
+{# REST OF FORMS #}
+{% macro autocomplete(item) %}
+    {% import _self as myForm %}
+    <div class="autocomplete-widget">
+        <div class="col-sm-11">{{ myForm.element(item) }}</div>
+        <div class="col-sm-1 loader">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+    </div>
+{% endmacro %}
